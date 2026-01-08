@@ -6,13 +6,12 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2016 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2016 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
@@ -52,7 +51,8 @@ typedef struct
   uint32_t DataType;                   /*!< 32-bit data, 16-bit data, 8-bit data or 1-bit string.
                                         This parameter can be a value of @ref CRYP_Data_Type */
   uint32_t KeySize;                    /*!< Used only in AES mode : 128, 192 or 256 bit key length in CRYP1.
-                                        128 or 256 bit key length in TinyAES This parameter can be a value of @ref CRYP_Key_Size */
+                                        128 or 256 bit key length in TinyAES This parameter can be a value of
+                                        @ref CRYP_Key_Size */
   uint32_t *pKey;                      /*!< The key used for encryption/decryption */
   uint32_t *pInitVect;                 /*!< The initialization vector used also as initialization
                                          counter in CTR mode */
@@ -65,6 +65,7 @@ typedef struct
   uint32_t HeaderSize;                /*!< The size of header buffer in word  */
   uint32_t *B0;                       /*!< B0 is first authentication block used only  in AES CCM mode */
   uint32_t DataWidthUnit;              /*!< Data With Unit, this parameter can be value of @ref CRYP_Data_Width_Unit*/
+  uint32_t HeaderWidthUnit;            /*!< Header Width Unit, this parameter can be value of @ref CRYP_Header_Width_Unit*/
   uint32_t KeyIVConfigSkip;            /*!< CRYP peripheral Key and IV configuration skip, to config Key and Initialization
                                            Vector only once and to skip configuration for consecutive processings.
                                            This parameter can be a value of @ref CRYP_Configuration_Skip */
@@ -209,6 +210,17 @@ typedef  void (*pCRYP_CallbackTypeDef)(CRYP_HandleTypeDef *hcryp);    /*!< point
 
 #define CRYP_DATAWIDTHUNIT_WORD   0x00000000U  /*!< By default, size unit is word */
 #define CRYP_DATAWIDTHUNIT_BYTE   0x00000001U  /*!< By default, size unit is word */
+
+/**
+  * @}
+  */
+
+/** @defgroup CRYP_Header_Width_Unit CRYP Header Width Unit
+  * @{
+  */
+
+#define CRYP_HEADERWIDTHUNIT_WORD   0x00000000U  /*!< By default, header size unit is word */
+#define CRYP_HEADERWIDTHUNIT_BYTE   0x00000001U  /*!< By default, header size unit is byte */
 
 /**
   * @}
@@ -391,8 +403,11 @@ typedef  void (*pCRYP_CallbackTypeDef)(CRYP_HandleTypeDef *hcryp);    /*!< point
   */
 #define CRYP_FLAG_MASK  0x0000001FU
 #if defined(CRYP)
-#define __HAL_CRYP_GET_FLAG(__HANDLE__, __FLAG__) ((((uint8_t)((__FLAG__) >> 24)) == 0x01U)?((((__HANDLE__)->Instance->RISR) & ((__FLAG__) & CRYP_FLAG_MASK)) == ((__FLAG__) & CRYP_FLAG_MASK)): \
-                                                   ((((__HANDLE__)->Instance->RISR) & ((__FLAG__) & CRYP_FLAG_MASK)) == ((__FLAG__) & CRYP_FLAG_MASK)))
+#define __HAL_CRYP_GET_FLAG(__HANDLE__, __FLAG__) ((((uint8_t)((__FLAG__) >> 24)) == 0x01U)? \
+                                                   ((((__HANDLE__)->Instance->RISR) & ((__FLAG__) \
+                                                       & CRYP_FLAG_MASK)) == ((__FLAG__) & CRYP_FLAG_MASK)): \
+                                                   ((((__HANDLE__)->Instance->RISR) & ((__FLAG__) & CRYP_FLAG_MASK))\
+                                                    == ((__FLAG__) & CRYP_FLAG_MASK)))
 #else /* AES*/
 #define __HAL_CRYP_GET_FLAG(__HANDLE__, __FLAG__) (((__HANDLE__)->Instance->SR & (__FLAG__)) == (__FLAG__))
 #endif /* End AES or CRYP */
@@ -670,4 +685,3 @@ uint32_t HAL_CRYP_GetError(CRYP_HandleTypeDef *hcryp);
 
 #endif /* __STM32F4xx_HAL_CRYP_H */
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
