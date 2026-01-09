@@ -80,13 +80,12 @@ rcl_allocator_t allocator;
 rcl_node_t node;
 rclc_executor_t executor;
 /* USER CODE END Variables */
-
 /* Definitions for defaultTask */
 osThreadId_t defaultTaskHandle;
 const osThreadAttr_t defaultTask_attributes = {
   .name = "defaultTask",
+  .stack_size = 1500 * 4,
   .priority = (osPriority_t) osPriorityBelowNormal,
-  .stack_size = 1500 * 4
 };
 
 /* Private function prototypes -----------------------------------------------*/
@@ -340,4 +339,3 @@ void bno055_imu_task(void *argument)
 
 /* USER CODE END Application */
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
