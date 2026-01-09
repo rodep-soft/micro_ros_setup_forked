@@ -39,16 +39,16 @@ EXTENSIONS_DIR = $(shell pwd)
 TOPFOLDER = $(EXTENSIONS_DIR)/../..
 UROS_DIR = $(TOPFOLDER)/mcu_ws
 BUILD_DIR = $(EXTENSIONS_DIR)/build
+UROS_APP_FOLDER = $(TOPFOLDER)/apps/ping_pong
 
 ######################################
 # source
 ######################################
 # C sources
 C_SOURCES =  \
-Core/Src/imu.c \
 Core/Src/main.c \
 Core/Src/gpio.c \
-Core/Src/freertos.c \
+Core/Src/freertos_wrapper.c \
 Core/Src/dma.c \
 Core/Src/usart.c \
 Core/Src/stm32f4xx_it.c \
@@ -93,13 +93,12 @@ Core/Src/allocators.c \
 Src/microros_transports.c \
 Core/Src/FreeRTOS-openocd.c \
 $(wildcard $(UROS_APP_FOLDER)/*.c) \
-Core/Src/i2c.c \
-Core/Src/sysmem.c \
-Core/Src/syscalls.c
+Core/Src/sysmem.c
 
-# Removing heap4 manager while being polite with STM32CubeMX
+# Removing heap4 manager and syscalls while being polite with STM32CubeMX
 TMPVAR := $(C_SOURCES)
 C_SOURCES := $(filter-out Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c, $(TMPVAR))
+C_SOURCES := $(filter-out Core/Src/syscalls.c, $(C_SOURCES))
 
 # ASM sources
 ASM_SOURCES =  \
