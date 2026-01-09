@@ -39,7 +39,7 @@ EXTENSIONS_DIR = $(shell pwd)
 TOPFOLDER = $(EXTENSIONS_DIR)/../..
 UROS_DIR = $(TOPFOLDER)/mcu_ws
 BUILD_DIR = $(EXTENSIONS_DIR)/build
-UROS_APP_FOLDER = $(TOPFOLDER)/apps/ping_pong
+# UROS_APP_FOLDER = $(TOPFOLDER)/apps/ping_pong  # Commented out to use custom app
 
 ######################################
 # source
@@ -49,6 +49,7 @@ C_SOURCES =  \
 Core/Src/main.c \
 Core/Src/gpio.c \
 Core/Src/freertos_wrapper.c \
+Core/Src/app_custom.c \
 Core/Src/dma.c \
 Core/Src/usart.c \
 Core/Src/stm32f4xx_it.c \
@@ -92,7 +93,6 @@ Core/Src/custom_memory_manager.c \
 Core/Src/allocators.c \
 Src/microros_transports.c \
 Core/Src/FreeRTOS-openocd.c \
-$(wildcard $(UROS_APP_FOLDER)/*.c) \
 Core/Src/sysmem.c
 
 # Removing heap4 manager and syscalls while being polite with STM32CubeMX
@@ -151,7 +151,8 @@ AS_DEFS =
 C_DEFS =  \
 -DUSE_HAL_DRIVER \
 -DSTM32F446xx \
--D_TIMEVAL_DEFINE
+-D_TIMEVAL_DEFINE \
+-DRMW_UXRCE_TRANSPORT_CUSTOM
 
 
 # AS includes
